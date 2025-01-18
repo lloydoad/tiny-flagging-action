@@ -9,7 +9,7 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v3
-      - uses: lloydoad/tiny-flagging-action@v1
+      - uses: lloydoad/tiny-flagging-action@latest
         with:
           flags_repo: ${{ github.repository }}
           token: ${{ secrets.GITHUB_TOKEN }}
