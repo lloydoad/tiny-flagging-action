@@ -27,10 +27,17 @@ runs:
         # First clone the app repo into actions repo
         git clone https://x-access-token:${{ inputs.token }}@github.com/${{ inputs.flags_repo }} app-repo
         
+        # Copy feature_flags from app repo into actions repo if it exists
+        if [ -d "app-repo/feature_flags" ]; then
+          rm -rf feature_flags
+          cp -r app-repo/feature_flags .
+        fi
+        
         # Run parser to create feature_flags directory (in the actions repo)
         python3 ${{ github.action_path }}/flag-parser.py "${{ inputs.pattern }}"
 
-        # Copy feature_flags into app repo from actions repo
+        # Remove existing feature_flags directory in app repo if it exists
+        rm -rf app-repo/feature_flags
         cp -r feature_flags app-repo/
         cd app-repo
 
