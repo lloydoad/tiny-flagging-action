@@ -1,8 +1,8 @@
 {
   "SearchBoolFeatureFlag": [
     {
-      "key": "enableSuggestions",
-      "default_value": true,
+      "key": "enableFilters",
+      "default_value": false,
       "type": "bool"
     },
     {
@@ -11,20 +11,20 @@
       "type": "bool"
     },
     {
-      "key": "enableNewSearch",
-      "default_value": false,
+      "key": "enableSuggestions",
+      "default_value": true,
       "type": "bool"
     },
     {
-      "key": "enableFilters",
+      "key": "enableNewSearch",
       "default_value": false,
       "type": "bool"
     }
   ],
   "AppStringFeatureFlag": [
     {
-      "key": "apiEndpoint",
-      "default_value": "https://api.default.com",
+      "key": "searchName",
+      "default_value": "Search in header...",
       "type": "string"
     },
     {
@@ -33,8 +33,8 @@
       "type": "string"
     },
     {
-      "key": "searchName",
-      "default_value": "Search in header...",
+      "key": "apiEndpoint",
+      "default_value": "https://api.default.com",
       "type": "string"
     }
   ]
