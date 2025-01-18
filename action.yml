@@ -4,16 +4,16 @@ branding:
   icon: 'flag'  # Using the 'flag' icon from Feather icons
   color: 'blue' # GitHub supports: yellow, blue, green, orange, red, purple, or gray
 inputs:
-  flags_repo:
-    description: 'Repository to store flags (format: owner/repo)'
-    required: true
+  # flags_repo:
+  #   description: 'Repository to store flags (format: owner/repo)'
+  #   required: true
   pattern:
     description: 'Pattern to find feature flag files'
     default: '**/*FeatureFlag.swift'
     required: false
-  token:
-    description: 'GitHub token for flag repo access'
-    required: true
+  # token:
+  #   description: 'GitHub token for flag repo access'
+  #   required: true
 
 runs:
   using: 'composite'
@@ -22,40 +22,45 @@ runs:
       with:
         python-version: '3.x'
 
-    - name: Clone App Repository
-      shell: bash
-      run: |
-        git clone https://x-access-token:${{ inputs.token }}@github.com/${{ inputs.flags_repo }} app-repo
-
     - name: Sync Feature Flags
       shell: bash
       run: |
-        rm -rf feature_flags
-        if [ -d "app-repo/feature_flags" ]; then
-          cp -r app-repo/feature_flags .
-        fi
+          ls -al
+  
+    # - name: Clone App Repository
+    #   shell: bash
+    #   run: |
+    #     git clone https://x-access-token:${{ inputs.token }}@github.com/${{ inputs.flags_repo }} app-repo
 
-    - name: Parse Flags
-      shell: bash
-      run: |
-        python3 ${{ github.action_path }}/flag-parser.py "${{ inputs.pattern }}"
-        rm -rf app-repo/feature_flags
-        cp -r feature_flags app-repo/
+    # - name: Sync Feature Flags
+    #   shell: bash
+    #   run: |
+    #     rm -rf feature_flags
+    #     if [ -d "app-repo/feature_flags" ]; then
+    #       cp -r app-repo/feature_flags .
+    #     fi
 
-    - name: Parse HTML
-      shell: bash
-      run: |
-        cd app-repo
-        python3 ${{ github.action_path }}/html-parser.py --input index-template.html --output feature_flags --flags flags.json --repo ${{ inputs.flags_repo }}
+    # - name: Parse Flags
+    #   shell: bash
+    #   run: |
+    #     python3 ${{ github.action_path }}/flag-parser.py "${{ inputs.pattern }}"
+    #     rm -rf app-repo/feature_flags
+    #     cp -r feature_flags app-repo/
 
-    - name: Commit and Push Changes
-      shell: bash
-      run: |
-        git config user.name "GitHub Action"
-        git config user.email "action@github.com"
-        git add feature_flags
-        git diff --quiet && git diff --staged --quiet || (
-          git commit -m "Update flags" && 
-          git push && 
-          echo "::notice::Access feature flags at https://raw.githubusercontent.com/${{ inputs.flags_repo }}/main/feature_flags/{enum}FeatureFlag/{featureName}"
-        )
+    # - name: Parse HTML
+    #   shell: bash
+    #   run: |
+    #     cd app-repo
+    #     python3 ${{ github.action_path }}/html-parser.py --input index-template.html --output feature_flags --flags flags.json --repo ${{ inputs.flags_repo }}
+
+    # - name: Commit and Push Changes
+    #   shell: bash
+    #   run: |
+    #     git config user.name "GitHub Action"
+    #     git config user.email "action@github.com"
+    #     git add feature_flags
+    #     git diff --quiet && git diff --staged --quiet || (
+    #       git commit -m "Update flags" && 
+    #       git push && 
+    #       echo "::notice::Access feature flags at https://raw.githubusercontent.com/${{ inputs.flags_repo }}/main/feature_flags/{enum}FeatureFlag/{featureName}"
+    #     )
