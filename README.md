@@ -11,26 +11,32 @@ Parse Swift feature flags and update a central repository.
 4. Add workflow:
 
 ```yaml
-name: Update Flags
+name: Update Tiny Flags
 on:
   push:
-    paths: ['**/*FeatureFlag.swift']
+    paths: ['**/feature_flags/**', '**/*FeatureFlag.swift']
 jobs:
   update:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
+      # checkout current repo
       - uses: actions/checkout@v3
-      - uses: username/tiny-flagging-action@v1
+      # checkout tiny flags repository
+      - uses: lloydoad/tiny-flagging-action@v2
         with:
-          flags_repo: 'org/flags-repo'
-          token: ${{ secrets.FLAGS_REPO_TOKEN }}
+          # repository for storing feature flags, defaults to reposity using this workflow
+          flags_repo: ${{ github.repository }}
+          # token for write access to repository storing feature flags
+          token: ${{ secrets.GITHUB_TOKEN }}
 ```
 
 ## Feature Flag Format
 
 ```swift
-// String flags
-enum AppStringFeatureFlag {
+// String flags in AppStringFeatureFlag.swift
+enum AppStringFeatureFlag: String {
     case welcomeMessage
     case apiEndpoint
     
@@ -42,8 +48,8 @@ enum AppStringFeatureFlag {
     }
 }
 
-// Boolean flags
-enum AppBoolFeatureFlag {
+// Boolean flags in AppBoolFeatureFlag.swift
+enum AppBoolFeatureFlag: String {
     case enableSearch
     case enableFilters
     
@@ -55,3 +61,12 @@ enum AppBoolFeatureFlag {
     }
 }
 ```
+
+## FAQ
+### Should each {Bool/String}FeatureFlag enum exist within it's own file? 
+Yes
+
+### How do I access the feature flag after it's created?
+* Feature flags are accessible through the raw content url of the repository specified in the workflow
+* For example, assuming your repository is "username/repo-name", the `.enableSearch` flag will be available at
+  "https://raw.githubusercontent.com/username/repo-name/main/feature_flags/SearchBoolFeatureFlag/enableFilters"

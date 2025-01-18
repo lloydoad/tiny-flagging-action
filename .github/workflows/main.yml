@@ -1,4 +1,4 @@
-name: Update Flags
+name: Update Tiny Flags
 on:
   push:
     paths: ['**/feature_flags/**', '**/*FeatureFlag.swift']
@@ -8,8 +8,12 @@ jobs:
     permissions:
       contents: write
     steps:
+      # checkout current repo
       - uses: actions/checkout@v3
+      # checkout tiny flags repository
       - uses: lloydoad/tiny-flagging-action@v2
         with:
+          # repository for storing feature flags, defaults to reposity using this workflow
           flags_repo: ${{ github.repository }}
+          # token for write access to repository storing feature flags
           token: ${{ secrets.GITHUB_TOKEN }}
