@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: lloydoad/tiny-flagging-action@v1
+      - uses: lloydoad/tiny-flagging-action@v1.0.1
         with:
           flags_repo: 'lloydoad/tiny-flagging-action'
           token: ${{ secrets.FLAGS_REPO_TOKEN }}
