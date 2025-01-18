@@ -6,6 +6,11 @@
       "type": "bool"
     },
     {
+      "key": "enableNewSearch",
+      "default_value": false,
+      "type": "bool"
+    },
+    {
       "key": "enableHistory",
       "default_value": true,
       "type": "bool"
@@ -13,11 +18,6 @@
     {
       "key": "enableSuggestions",
       "default_value": true,
-      "type": "bool"
-    },
-    {
-      "key": "enableNewSearch",
-      "default_value": false,
       "type": "bool"
     }
   ],
@@ -28,13 +28,13 @@
       "type": "string"
     },
     {
-      "key": "welcomeMessage",
-      "default_value": "Welcome to the app \u2764\ufe0f",
+      "key": "apiEndpoint",
+      "default_value": "https://api.default.com",
       "type": "string"
     },
     {
-      "key": "apiEndpoint",
-      "default_value": "https://api.default.com",
+      "key": "welcomeMessage",
+      "default_value": "Welcome to the app \u2764\ufe0f",
       "type": "string"
     }
   ]
