@@ -1,13 +1,8 @@
 {
   "SearchBoolFeatureFlag": [
     {
-      "key": "enableSuggestions",
-      "default_value": true,
-      "type": "bool"
-    },
-    {
-      "key": "enableHistory",
-      "default_value": true,
+      "key": "enableFilters",
+      "default_value": false,
       "type": "bool"
     },
     {
@@ -16,8 +11,13 @@
       "type": "bool"
     },
     {
-      "key": "enableFilters",
-      "default_value": false,
+      "key": "enableHistory",
+      "default_value": true,
+      "type": "bool"
+    },
+    {
+      "key": "enableSuggestions",
+      "default_value": true,
       "type": "bool"
     }
   ],
@@ -28,13 +28,13 @@
       "type": "string"
     },
     {
-      "key": "searchName",
-      "default_value": "Search in header...",
+      "key": "apiEndpoint",
+      "default_value": "https://api.default.com",
       "type": "string"
     },
     {
-      "key": "apiEndpoint",
-      "default_value": "https://api.default.com",
+      "key": "searchName",
+      "default_value": "Search in header...",
       "type": "string"
     }
   ]
