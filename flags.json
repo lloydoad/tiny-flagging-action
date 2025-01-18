@@ -11,20 +11,20 @@
       "type": "bool"
     },
     {
-      "key": "enableFilters",
-      "default_value": false,
+      "key": "enableSuggestions",
+      "default_value": true,
       "type": "bool"
     },
     {
-      "key": "enableSuggestions",
-      "default_value": true,
+      "key": "enableFilters",
+      "default_value": false,
       "type": "bool"
     }
   ],
   "AppStringFeatureFlag": [
     {
       "key": "welcomeMessage",
-      "default_value": "Welcome to the app!!!!",
+      "default_value": "Welcome to the app \ud83d\ude02",
       "type": "string"
     },
     {
