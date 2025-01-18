@@ -42,7 +42,7 @@
       "key": "searchName",
       "default_value": "Type in header...",
       "type": "string",
-      "override_value": null
+      "override_value": "Custom language override"
     }
   ]
 }
