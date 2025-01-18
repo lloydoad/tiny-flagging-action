@@ -13,7 +13,7 @@ enum AppStringFeatureFlag: String {
         case .apiEndpoint:
             return "https://api.default.com"
         case .searchName:
-            return "Search here..."
+            return "Search here....."
         }
     }
 }
