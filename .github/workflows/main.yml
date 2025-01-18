@@ -1,7 +1,6 @@
 name: Update Flags
 on:
-  push:
-    paths: ['**/*FeatureFlag.swift']
+  push: # paths: ['**/*FeatureFlag.swift']
 jobs:
   update:
     runs-on: ubuntu-latest
@@ -9,7 +8,7 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v3
-      - uses: lloydoad/tiny-flagging-action@v1.0.2
+      - uses: lloydoad/tiny-flagging-action@v1
         with:
           flags_repo: ${{ github.repository }}
           token: ${{ secrets.GITHUB_TOKEN }}
