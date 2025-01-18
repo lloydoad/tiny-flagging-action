@@ -4,7 +4,7 @@ import Foundation
 enum AppStringFeatureFlag: String {
     case welcomeMessage
     case apiEndpoint
-    case searchPlaceholder
+    case searchName
     
     var defaultValue: String {
         switch self {
@@ -12,7 +12,7 @@ enum AppStringFeatureFlag: String {
             return "Welcome to the app!"
         case .apiEndpoint:
             return "https://api.default.com"
-        case .searchPlaceholder:
+        case .searchName:
             return "Search here..."
         }
     }
