@@ -20,7 +20,7 @@ runs:
         python-version: '3.x'
     - name: Run Parser
       shell: bash
-      run: python3 ${{ github.action_path }}/flag-parser.py "${{ inputs.pattern }}" flags.json
+      run: python3 ${{ github.action_path }}/flag-parser.py "${{ inputs.pattern }}" -o flags.json
     - name: Update Flags Repo
       shell: bash
       run: |
