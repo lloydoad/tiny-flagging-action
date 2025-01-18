@@ -1,5 +1,6 @@
 name: 'Feature Flag Parser'
 description: 'Parse Swift Feature Flags and update flags repository'
+icon: flag
 inputs:
   flags_repo:
     description: 'Repository to store flags (format: owner/repo)'
