@@ -70,3 +70,7 @@ Yes
 * Feature flags are accessible through the raw content url of the repository specified in the workflow
 * For example, assuming your repository is "username/repo-name", the `.enableSearch` flag will be available at
   "https://raw.githubusercontent.com/username/repo-name/main/feature_flags/SearchBoolFeatureFlag/enableFilters"
+
+### Does `flags_repo` need to be public?
+  * No, works out of the box with public repositories.
+  * To use a private repo, `secrets.GITHUB_TOKEN` has to be replaced with the relevant token for write access. Requests to the githubusercontent will also need to be authenticated.
