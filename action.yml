@@ -21,18 +21,23 @@ runs:
     - uses: actions/setup-python@v4
       with:
         python-version: '3.x'
-    - name: Run Parser
-      shell: bash
-      run: python3 ${{ github.action_path }}/flag-parser.py "${{ inputs.pattern }}"
-    - name: Update Flags Repo
+    - name: Parse and Update Flags
       shell: bash
       run: |
-        git clone https://x-access-token:${{ inputs.token }}@github.com/${{ inputs.flags_repo }} flags-repo
-        cp flags.json flags-repo/
-        cd flags-repo
+        # First clone the app repo into actions repo
+        git clone https://x-access-token:${{ inputs.token }}@github.com/${{ inputs.flags_repo }} app-repo
+        
+        # Run parser to create feature_flags directory (in the actions repo)
+        python3 ${{ github.action_path }}/flag-parser.py "${{ inputs.pattern }}"
+
+        # Copy feature_flags into app repo from actions repo
+        cp -r feature_flags app-repo/
+        cd app-repo
+
+        # Configure git and push changes
         git config user.name "GitHub Action"
         git config user.email "action@github.com"
-        git add flags.json
+        git add feature_flags
         git diff --quiet && git diff --staged --quiet || (
           git commit -m "Update flags" && 
           git push && 
