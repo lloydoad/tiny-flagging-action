@@ -9,7 +9,7 @@ enum AppStringFeatureFlag: String {
     var defaultValue: String {
         switch self {
         case .welcomeMessage: 
-            return "Welcome to the app 😂"
+            return "Welcome to the app ❤️"
         case .apiEndpoint:
             return "https://api.default.com"
         case .searchName:
