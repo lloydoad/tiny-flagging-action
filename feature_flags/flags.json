@@ -1,12 +1,6 @@
 {
   "SearchBoolFeatureFlag": [
     {
-      "key": "enableFilters",
-      "default_value": false,
-      "type": "bool",
-      "override_value": null
-    },
-    {
       "key": "enableSuggestions",
       "default_value": false,
       "type": "bool",
@@ -14,6 +8,12 @@
     },
     {
       "key": "enableNewSearch",
+      "default_value": false,
+      "type": "bool",
+      "override_value": null
+    },
+    {
+      "key": "enableFilters",
       "default_value": false,
       "type": "bool",
       "override_value": null
@@ -27,8 +27,8 @@
   ],
   "AppStringFeatureFlag": [
     {
-      "key": "searchName",
-      "default_value": "Type in header...",
+      "key": "welcomeMessage",
+      "default_value": "Welcome to the app \u2764\ufe0f",
       "type": "string",
       "override_value": null
     },
@@ -39,8 +39,8 @@
       "override_value": null
     },
     {
-      "key": "welcomeMessage",
-      "default_value": "Welcome to the app \u2764\ufe0f",
+      "key": "searchName",
+      "default_value": "Type in header...",
       "type": "string",
       "override_value": null
     }
