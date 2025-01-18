@@ -1,6 +1,7 @@
 name: Update Flags
 on:
-  push: # paths: ['**/*FeatureFlag.swift']
+  push:
+    paths: ['**/*FeatureFlag.swift']
 jobs:
   update:
     runs-on: ubuntu-latest
