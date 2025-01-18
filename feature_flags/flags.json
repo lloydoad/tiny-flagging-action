@@ -1,18 +1,6 @@
 {
   "SearchBoolFeatureFlag": [
     {
-      "key": "enableHistory",
-      "default_value": true,
-      "type": "bool",
-      "override_value": null
-    },
-    {
-      "key": "enableFilters",
-      "default_value": false,
-      "type": "bool",
-      "override_value": null
-    },
-    {
       "key": "enableSuggestions",
       "default_value": true,
       "type": "bool",
@@ -23,15 +11,21 @@
       "default_value": false,
       "type": "bool",
       "override_value": null
+    },
+    {
+      "key": "enableFilters",
+      "default_value": false,
+      "type": "bool",
+      "override_value": null
+    },
+    {
+      "key": "enableHistory",
+      "default_value": true,
+      "type": "bool",
+      "override_value": null
     }
   ],
   "AppStringFeatureFlag": [
-    {
-      "key": "welcomeMessage",
-      "default_value": "Welcome to the app \u2764\ufe0f",
-      "type": "string",
-      "override_value": null
-    },
     {
       "key": "searchName",
       "default_value": "Type in header...",
@@ -41,6 +35,12 @@
     {
       "key": "apiEndpoint",
       "default_value": "https://api.default.com",
+      "type": "string",
+      "override_value": null
+    },
+    {
+      "key": "welcomeMessage",
+      "default_value": "Welcome to the app \u2764\ufe0f",
       "type": "string",
       "override_value": null
     }
