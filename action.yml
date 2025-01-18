@@ -1,7 +1,8 @@
-name: 'Feature Flag Parser'
-description: 'Parse Swift Feature Flags and update flags repository'
-icon: 'flag'
-color: 'green'
+name: 'Tiny Flags Action'
+description: 'Automatically update feature flags in your repository'
+branding:
+  icon: 'flag'  # Using the 'flag' icon from Feather icons
+  color: 'blue' # GitHub supports: yellow, blue, green, orange, red, purple, or gray
 inputs:
   flags_repo:
     description: 'Repository to store flags (format: owner/repo)'
