@@ -36,5 +36,5 @@ runs:
         git diff --quiet && git diff --staged --quiet || (
           git commit -m "Update flags" && 
           git push && 
-          echo "::notice::Updated flags.json at https://raw.githubusercontent.com/${{ inputs.flags_repo }}/main/flags.json"
+          echo "::notice::Access feature flags at https://raw.githubusercontent.com/${{ inputs.flags_repo }}/main/feature_flags/{enum}FeatureFlag/{featureName}"
         )
