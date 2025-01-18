@@ -28,8 +28,8 @@ runs:
         git clone https://x-access-token:${{ inputs.token }}@github.com/${{ inputs.flags_repo }} app-repo
         
         # Copy feature_flags from app repo into actions repo if it exists
+        rm -rf feature_flags
         if [ -d "app-repo/feature_flags" ]; then
-          rm -rf feature_flags
           cp -r app-repo/feature_flags .
         fi
         
