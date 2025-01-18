@@ -21,27 +21,31 @@ runs:
     - uses: actions/setup-python@v4
       with:
         python-version: '3.x'
-    - name: Parse and Update Flags
+
+    - name: Clone App Repository
       shell: bash
       run: |
-        # First clone the app repo into actions repo
         git clone https://x-access-token:${{ inputs.token }}@github.com/${{ inputs.flags_repo }} app-repo
-        
-        # Copy feature_flags from app repo into actions repo if it exists
+
+    - name: Sync Feature Flags
+      shell: bash
+      run: |
         rm -rf feature_flags
         if [ -d "app-repo/feature_flags" ]; then
           cp -r app-repo/feature_flags .
         fi
-        
-        # Run parser to create feature_flags directory (in the actions repo)
-        python3 ${{ github.action_path }}/flag-parser.py "${{ inputs.pattern }}"
 
-        # Remove existing feature_flags directory in app repo if it exists
+    - name: Parse Flags
+      shell: bash
+      run: |
+        python3 ${{ github.action_path }}/flag-parser.py "${{ inputs.pattern }}"
         rm -rf app-repo/feature_flags
         cp -r feature_flags app-repo/
-        cd app-repo
 
-        # Configure git and push changes
+    - name: Commit and Push Changes
+      shell: bash
+      run: |
+        cd app-repo
         git config user.name "GitHub Action"
         git config user.email "action@github.com"
         git add feature_flags
