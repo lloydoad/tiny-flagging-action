@@ -1,25 +1,25 @@
 {
   "SearchBoolFeatureFlag": [
     {
-      "key": "enableSuggestions",
-      "default_value": false,
-      "type": "bool",
-      "override_value": null
-    },
-    {
-      "key": "enableNewSearch",
-      "default_value": false,
-      "type": "bool",
-      "override_value": null
-    },
-    {
       "key": "enableFilters",
       "default_value": false,
       "type": "bool",
       "override_value": null
     },
     {
+      "key": "enableSuggestions",
+      "default_value": false,
+      "type": "bool",
+      "override_value": null
+    },
+    {
       "key": "enableHistory",
+      "default_value": false,
+      "type": "bool",
+      "override_value": null
+    },
+    {
+      "key": "enableNewSearch",
       "default_value": false,
       "type": "bool",
       "override_value": null
