@@ -1,12 +1,12 @@
 {
   "SearchBoolFeatureFlag": [
     {
-      "key": "enableHistory",
+      "key": "enableSuggestions",
       "default_value": true,
       "type": "bool"
     },
     {
-      "key": "enableSuggestions",
+      "key": "enableHistory",
       "default_value": true,
       "type": "bool"
     },
@@ -23,18 +23,18 @@
   ],
   "AppStringFeatureFlag": [
     {
+      "key": "apiEndpoint",
+      "default_value": "https://api.default.com",
+      "type": "string"
+    },
+    {
       "key": "welcomeMessage",
-      "default_value": "Welcome to the app \ud83d\ude02",
+      "default_value": "Welcome to the app \u2764\ufe0f",
       "type": "string"
     },
     {
       "key": "searchName",
       "default_value": "Search in header...",
-      "type": "string"
-    },
-    {
-      "key": "apiEndpoint",
-      "default_value": "https://api.default.com",
       "type": "string"
     }
   ]
