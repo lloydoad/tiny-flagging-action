@@ -13,7 +13,7 @@ enum SearchBoolFeatureFlag: String {
             return false
         case .enableSuggestions,
              .enableHistory:
-            return true
+            return false
         }
     }
 }
