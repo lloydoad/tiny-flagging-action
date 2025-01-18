@@ -11,30 +11,30 @@
       "type": "bool"
     },
     {
-      "key": "enableHistory",
-      "default_value": true,
+      "key": "enableNewSearch",
+      "default_value": false,
       "type": "bool"
     },
     {
-      "key": "enableNewSearch",
-      "default_value": false,
+      "key": "enableHistory",
+      "default_value": true,
       "type": "bool"
     }
   ],
   "AppStringFeatureFlag": [
     {
-      "key": "apiEndpoint",
-      "default_value": "https://api.default.com",
-      "type": "string"
-    },
-    {
-      "key": "searchPlaceholder",
-      "default_value": "Search here...",
-      "type": "string"
-    },
-    {
       "key": "welcomeMessage",
       "default_value": "Welcome to the app!",
+      "type": "string"
+    },
+    {
+      "key": "searchName",
+      "default_value": "Search here..",
+      "type": "string"
+    },
+    {
+      "key": "apiEndpoint",
+      "default_value": "https://api.default.com",
       "type": "string"
     }
   ]
