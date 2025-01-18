@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Feature Flags Editor</title>
+    <meta charset="UTF-8">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .toggle:checked + .track {
+            background-color: #3b82f6;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 p-6">
+    <div class="max-w-6xl mx-auto">
+        <div id="content">
+            <div class="bg-white rounded-lg shadow-sm">
+                <div id="instructions"></div>
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead>
+                        <tr class="bg-gray-50">
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Feature Flag Type</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Key</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Value</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">URL</th>
+                        </tr>
+                    </thead>
+                    <tbody id="flagsTable" class="bg-white divide-y divide-gray-200">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const flags = {FLAG_JSON_DATA};
+        const repo = {FLAG_JSON_REPO};
+        const flag_path = {FLAG_PATH};
+        const output_path = {OUTPUT_PATH};
+
+        function renderInstructions() {
+            const instructions = document.getElementById('instructions');
+            const json_file_link = `https://github.com/${repo}/edit/main/${output_path}/${flag_path}`;
+            instructions.innerHTML = `
+                <a 
+                href="${json_file_link}"
+                target="_blank"
+                class="block w-full text-center text-white bg-blue-500 hover:bg-blue-400 py-4 rounded-lg"
+                >
+                    Update Feature Flags on Github
+                </a>
+            `;
+        }
+
+        function renderFlags() {
+            const table = document.getElementById('flagsTable');
+            table.innerHTML = '';
+
+            Object.entries(flags).forEach(([groupName, groupFlags]) => {
+                groupFlags.forEach(flag => {
+                    const row = document.createElement('tr');
+                    const link = `https://raw.githubusercontent.com/${repo}/main/${output_path}/${groupName}/${flag.key}`
+                    row.innerHTML = `
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${groupName}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${flag.key}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${flag.override_value ?? flag.default_value}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            <a href="${link}" target="_blank" class="text-blue-600 hover:text-blue-800">LINK</a>
+                        </td>
+                    `;
+                    table.appendChild(row);
+                });
+            });
+        }
+
+        renderInstructions();
+        renderFlags();
+    </script>
+</body>
+</html>
