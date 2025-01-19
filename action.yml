@@ -19,17 +19,7 @@ runs:
       with:
         python-version: '3.x'
 
-    - name: Syncing Feature Flags
-      shell: bash
-      run: |
-          python3 ${{ github.action_path }}/flag-parser.py --input_dir . --output_dir ./generated_feature_flags --pattern '**/*FeatureFlag.swift'
-
-    - name: Creating Viewing Page
-      shell: bash
-      run: |
-          python3 ${{ github.action_path }}/html-parser.py --input ${{ github.action_path }}/index-template.html --output ./generated_feature_flags --flags flags.json --repo ${{ github.repository }} --branch ${{ inputs.branch }}
-
-    - name: Pushing Changes to branch
+    - name: Updating feature flag branch
       shell: bash
       run: |
           # setup ID
@@ -43,9 +33,29 @@ runs:
             git checkout -b ${{ inputs.branch }}
           fi
 
+          # Fetch the latest changes from the main branch
+          git fetch origin main
+
+          # Rebase the current branch with the main branch to solve conflicts
+          git rebase origin/main
+
+    - name: Syncing Feature Flags
+      shell: bash
+      run: |
+          python3 ${{ github.action_path }}/flag-parser.py --input_dir . --output_dir ./generated_feature_flags --pattern '**/*FeatureFlag.swift'
+
+    - name: Creating Viewing Page
+      shell: bash
+      run: |
+          python3 ${{ github.action_path }}/html-parser.py --input ${{ github.action_path }}/index-template.html --output ./generated_feature_flags --flags flags.json --repo ${{ github.repository }} --branch ${{ inputs.branch }}
+
           # Add gh pages index
+          rm -rf index.html
           cp ./generated_feature_flags/index.html index.html
 
+    - name: Pushing Changes to branch
+      shell: bash
+      run: |
           # Add all changes
           git add ./generated_feature_flags && git commit -m "Update Feature Flags"
           git add index.html && git commit -m 'Update Github page'
@@ -56,17 +66,6 @@ runs:
     - name: Print Link to Page
       shell: bash
       run: |
+          # TODO: change this page to point to right place
           echo "::notice::Update pages to generated branch https://github.com/${{ github.repository }}/settings/pages"
           echo "::notice::Feature flags view is available at https://${{ github.repository_owner }}.github.io/${{ github.repository }}/"
-
-    # - name: Commit and Push Changes
-    #   shell: bash
-    #   run: |
-    #     git config user.name "GitHub Action"
-    #     git config user.email "action@github.com"
-    #     git add feature_flags
-    #     git diff --quiet && git diff --staged --quiet || (
-    #       git commit -m "Update flags" && 
-    #       git push && 
-    #       echo "::notice::Access feature flags at https://raw.githubusercontent.com/${{ inputs.flags_repo }}/main/feature_flags/{enum}FeatureFlag/{featureName}"
-    #     )
