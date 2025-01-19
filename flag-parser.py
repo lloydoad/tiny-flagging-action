@@ -94,9 +94,9 @@ def merge_with_existing(new_flags: Dict[str, List[FeatureFlag]], existing_path: 
         return {enum_name: [vars(flag) for flag in flags] 
                for enum_name, flags in new_flags.items()}
 
-def create_flag_directories(flags_data: Dict) -> None:
+def create_flag_directories(flags_data: Dict, output_dir: str) -> None:
     # Create parent feature_flags directory
-    feature_flags_dir = "feature_flags"
+    feature_flags_dir = output_dir
     if os.path.exists(feature_flags_dir):
         # Clean up existing directories and files
         for item in os.listdir(feature_flags_dir):
@@ -104,6 +104,7 @@ def create_flag_directories(flags_data: Dict) -> None:
             if os.path.isdir(item_path):
                 # Clean up directory contents
                 for file in os.listdir(item_path):
+                    print(file)
                     os.remove(os.path.join(item_path, file))
                 os.rmdir(item_path)
             else:
@@ -130,14 +131,17 @@ def create_flag_directories(flags_data: Dict) -> None:
 
 def main():
     parser = argparse.ArgumentParser(description='Parse Swift Feature Flag files')
+    parser.add_argument('input_dir', help='Directory to search for Swift files')
+    parser.add_argument('output_dir', help='Directory to output processed flags')
     parser.add_argument('pattern', help='Search pattern for Swift files')
     args = parser.parse_args()
     
     all_flags = {}
-    flag_files = find_flag_files(args.pattern)
+    # Use input_dir and pattern to find files
+    flag_files = find_flag_files(os.path.join(args.input_dir, args.pattern))
     
     if not flag_files:
-        print(f"No files found matching pattern: {args.pattern}")
+        print(f"No files found matching pattern: {args.pattern} in directory: {args.input_dir}")
         sys.exit(1)
     
     for path in flag_files:
@@ -152,12 +156,11 @@ def main():
             continue
     
     # First merge with existing flags.json
-    feature_flags_dir = "feature_flags"
-    output_path = Path(os.path.join(feature_flags_dir, "flags.json"))
+    output_path = Path(os.path.join(args.output_dir, "flags.json"))
     merged = merge_with_existing(all_flags, output_path)
     
     # Then clean up and create directories with merged data
-    create_flag_directories(merged)
+    create_flag_directories(merged, args.output_dir)
     
     # Finally write the merged flags.json
     output_path.write_text(json.dumps(merged, indent=2))
