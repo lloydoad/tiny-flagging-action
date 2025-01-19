@@ -49,6 +49,32 @@ runs:
           # Push changes to new branch
           git push --force https://x-access-token:${{ inputs.token }}@github.com/${{ github.repository }} HEAD
 
+    - name: Deploy to GitHub Pages
+      shell: bash
+      run: |
+          # Ensure the gh-pages branch exists
+          if git show-ref --verify --quiet refs/heads/gh-pages; then
+            git checkout gh-pages
+          else
+            git checkout --orphan gh-pages
+            git rm -rf .
+          fi
+
+          # Copy the generated index.html to the root of the gh-pages branch
+          cp ./generated_feature_flags/index.html ./index.html
+
+          # Add and commit the changes
+          git add index.html
+          git commit -m "Deploy feature flags view to GitHub Pages"
+
+          # Push to the gh-pages branch
+          git push --force https://x-access-token:${{ inputs.token }}@github.com/${{ github.repository }} gh-pages
+    
+    - name: Print Link to Page
+      shell: bash
+      run: |
+          echo "::notice::Feature flags view is available at https://${{ github.repository_owner }}.github.io/${{ github.repository }}/"
+
     # - name: Commit and Push Changes
     #   shell: bash
     #   run: |
