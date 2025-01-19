@@ -5,29 +5,28 @@ Parse Swift feature flags and update a central repository.
 
 ## Usage
 
-1. Create a repository to store flags
-2. Create a Personal Access Token with repo access
-3. Add token as secret `FLAGS_REPO_TOKEN` to your repository
-4. Add workflow:
+1. Add workflow to your repository
+2. Create flags using the required Feature Flag Format
+3. Push your changes to github
+4. Flags available at https://{{username}}.github.io/{repository name}/
 
 ```yaml
-name: Update Tiny Flags
+name: Sync Feature Flags - TinyFlag
 on:
   push:
-    paths: ['**/feature_flags/**', '**/*FeatureFlag.swift']
+    paths: ['**/generated_feature_flags/**', '**/*FeatureFlag.swift']
 jobs:
   update:
     runs-on: ubuntu-latest
     permissions:
+      # Required for updating stored flags
       contents: write
     steps:
       # checkout current repo
       - uses: actions/checkout@v3
       # checkout tiny flags repository
-      - uses: lloydoad/tiny-flagging-action@v2
+      - uses: lloydoad/tiny-flagging-action@main
         with:
-          # repository for storing feature flags, defaults to reposity using this workflow
-          flags_repo: ${{ github.repository }}
           # token for write access to repository storing feature flags
           token: ${{ secrets.GITHUB_TOKEN }}
 ```
@@ -70,7 +69,3 @@ Yes
 * Feature flags are accessible through the raw content url of the repository specified in the workflow
 * For example, assuming your repository is "username/repo-name", the `.enableSearch` flag will be available at
   "https://raw.githubusercontent.com/username/repo-name/main/feature_flags/SearchBoolFeatureFlag/enableFilters"
-
-### Does `flags_repo` need to be public?
-  * No, works out of the box with public repositories.
-  * To use a private repo, `secrets.GITHUB_TOKEN` has to be replaced with the relevant token for write access. Requests to the githubusercontent will also need to be authenticated.
