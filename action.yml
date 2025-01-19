@@ -26,6 +26,7 @@ runs:
       shell: bash
       run: |
           ls -al
+          ls ${{ github.action_path }}
   
     # - name: Clone App Repository
     #   shell: bash
