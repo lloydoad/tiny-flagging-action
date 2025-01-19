@@ -52,6 +52,13 @@ runs:
     - name: Deploy to GitHub Pages
       shell: bash
       run: |
+          # Fetch and checkout the branch with generated files
+          git fetch origin ${{ inputs.branch }}
+          git checkout ${{ inputs.branch }}
+
+          # Copy the generated index.html to a temporary location
+          cp ./generated_feature_flags/index.html /tmp/index.html
+
           # Ensure the gh-pages branch exists
           if git show-ref --verify --quiet refs/heads/gh-pages; then
             git checkout gh-pages
@@ -60,12 +67,15 @@ runs:
             git rm -rf .
           fi
 
-          # Copy the generated index.html to the root of the gh-pages branch
-          cp ./generated_feature_flags/index.html ./index.html
+          # Remove all files except .git to ensure only index.html is present
+          find . -mindepth 1 ! -regex '^./\.git\(/.*\)?' -delete
+
+          # Move the index.html back to the root of the gh-pages branch
+          mv /tmp/index.html ./index.html
 
           # Add and commit the changes
           git add index.html
-          git commit -m "Deploy feature flags view to GitHub Pages"
+          git commit -m "Deploy feature flags view to GitHub Pages" || echo "No changes to commit"
 
           # Push to the gh-pages branch
           git push --force https://x-access-token:${{ inputs.token }}@github.com/${{ github.repository }} gh-pages
