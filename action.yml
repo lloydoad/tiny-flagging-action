@@ -25,7 +25,10 @@ runs:
     - name: Sync Feature Flags
       shell: bash
       run: |
+          python3 ${{ github.action_path }}/flag-parser.py . ./gen_feature_flags ${{ inputs.pattern }}
           ls -al
+          ls gen_feature_flags
+          cat gen_feature_flags/flags.json
           ls ${{ github.action_path }}
   
     # - name: Clone App Repository
