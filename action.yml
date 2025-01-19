@@ -42,47 +42,21 @@ runs:
           else
             git checkout -b ${{ inputs.branch }}
           fi
-    
+
+          # Add gh pages index
+          cp ./generated_feature_flags/index.html index.html
+
           # Add all changes
           git add ./generated_feature_flags && git commit -m "Update Feature Flags"
+          git add index.html && git commit -m 'Update Github page'
 
           # Push changes to new branch
           git push --force https://x-access-token:${{ inputs.token }}@github.com/${{ github.repository }} HEAD
-
-    - name: Deploy to GitHub Pages
-      shell: bash
-      run: |
-          # Fetch and checkout the branch with generated files
-          git fetch origin ${{ inputs.branch }}
-          git checkout ${{ inputs.branch }}
-
-          # Copy the generated index.html to a temporary location
-          cp ./generated_feature_flags/index.html /tmp/index.html
-
-          # Ensure the gh-pages branch exists
-          if git show-ref --verify --quiet refs/heads/gh-pages; then
-            git checkout gh-pages
-          else
-            git checkout --orphan gh-pages
-            git rm -rf .
-          fi
-
-          # Remove all files except .git to ensure only index.html is present
-          find . -mindepth 1 ! -regex '^./\.git\(/.*\)?' -delete
-
-          # Move the index.html back to the root of the gh-pages branch
-          mv /tmp/index.html ./index.html
-
-          # Add and commit the changes
-          git add index.html
-          git commit -m "Deploy feature flags view to GitHub Pages" || echo "No changes to commit"
-
-          # Push to the gh-pages branch
-          git push --force https://x-access-token:${{ inputs.token }}@github.com/${{ github.repository }} gh-pages
     
     - name: Print Link to Page
       shell: bash
       run: |
+          echo "::notice::Update pages to generated branch https://github.com/${{ github.repository }}/settings/pages"
           echo "::notice::Feature flags view is available at https://${{ github.repository_owner }}.github.io/${{ github.repository }}/"
 
     # - name: Commit and Push Changes
