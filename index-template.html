@@ -34,12 +34,13 @@
     <script>
         const flags = {FLAG_JSON_DATA};
         const repo = {FLAG_JSON_REPO};
+        const branch = {FLAG_JSON_REPO_BRANCH};
         const flag_path = {FLAG_PATH};
         const output_path = {OUTPUT_PATH};
 
         function renderInstructions() {
             const instructions = document.getElementById('instructions');
-            const json_file_link = `https://github.com/${repo}/edit/main/${output_path}/${flag_path}`;
+            const json_file_link = `https://github.com/${repo}/edit/${branch}/${output_path}/${flag_path}`;
             instructions.innerHTML = `
                 <a 
                 href="${json_file_link}"
@@ -58,7 +59,7 @@
             Object.entries(flags).forEach(([groupName, groupFlags]) => {
                 groupFlags.forEach(flag => {
                     const row = document.createElement('tr');
-                    const link = `https://raw.githubusercontent.com/${repo}/main/${output_path}/${groupName}/${flag.key}`
+                    const link = `https://raw.githubusercontent.com/${repo}/${branch}/${output_path}/${groupName}/${flag.key}`
                     row.innerHTML = `
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${groupName}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${flag.key}</td>

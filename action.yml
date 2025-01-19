@@ -4,16 +4,13 @@ branding:
   icon: 'flag'  # Using the 'flag' icon from Feather icons
   color: 'blue' # GitHub supports: yellow, blue, green, orange, red, purple, or gray
 inputs:
-  # flags_repo:
-  #   description: 'Repository to store flags (format: owner/repo)'
-  #   required: true
-  pattern:
-    description: 'Pattern to find feature flag files'
-    default: '**/*FeatureFlag.swift'
+  branch:
+    description: 'Branch to store feature flags'
+    default: 'generated_flag_branch'
     required: false
-  # token:
-  #   description: 'GitHub token for flag repo access'
-  #   required: true
+  token:
+    description: 'GitHub token for flag repo access'
+    required: true
 
 runs:
   using: 'composite'
@@ -22,37 +19,35 @@ runs:
       with:
         python-version: '3.x'
 
-    - name: Sync Feature Flags
+    - name: Syncing Feature Flags
       shell: bash
       run: |
-          python3 ${{ github.action_path }}/flag-parser.py . ./gen_feature_flags ${{ inputs.pattern }}
-          ls -al gen_feature_flags
-  
-    # - name: Clone App Repository
-    #   shell: bash
-    #   run: |
-    #     git clone https://x-access-token:${{ inputs.token }}@github.com/${{ inputs.flags_repo }} app-repo
+          python3 ${{ github.action_path }}/flag-parser.py --input_dir . --output_dir ./generated_feature_flags --pattern '**/*FeatureFlag.swift'
 
-    # - name: Sync Feature Flags
-    #   shell: bash
-    #   run: |
-    #     rm -rf feature_flags
-    #     if [ -d "app-repo/feature_flags" ]; then
-    #       cp -r app-repo/feature_flags .
-    #     fi
+    - name: Creating Viewing Page
+      shell: bash
+      run: |
+          python3 ${{ github.action_path }}/html-parser.py --input ${{ github.action_path }}/index-template.html --output ./generated_feature_flags --flags flags.json --repo ${{ github.repository }} --branch ${{ inputs.branch }}
 
-    # - name: Parse Flags
-    #   shell: bash
-    #   run: |
-    #     python3 ${{ github.action_path }}/flag-parser.py "${{ inputs.pattern }}"
-    #     rm -rf app-repo/feature_flags
-    #     cp -r feature_flags app-repo/
+    - name: Pushing Changes to branch
+      shell: bash
+      run: |
+          # setup ID
+          git config user.name "GitHub Action"
+          git config user.email "action@github.com"
 
-    # - name: Parse HTML
-    #   shell: bash
-    #   run: |
-    #     cd app-repo
-    #     python3 ${{ github.action_path }}/html-parser.py --input index-template.html --output feature_flags --flags flags.json --repo ${{ inputs.flags_repo }}
+          # Check if the branch already exists
+          if git show-ref --verify --quiet refs/heads/${{ inputs.branch }}; then
+            git checkout ${{ inputs.branch }}
+          else
+            git checkout -b ${{ inputs.branch }}
+          fi
+    
+          # Add all changes
+          git add ./generated_feature_flags && git commit -m "Update Feature Flags"
+
+          # Push changes to new branch
+          # git push --force https://x-access-token:${{ inputs.token }}@github.com/${{ github.repository }} HEAD
 
     # - name: Commit and Push Changes
     #   shell: bash

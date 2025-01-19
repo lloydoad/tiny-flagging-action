@@ -15,7 +15,7 @@ def python_to_js_value(value):
         return json.dumps(value, ensure_ascii=False)
     return str(value)
 
-def generate_html(template_path, output_path, flags_path, flags_json_repo):
+def generate_html(template_path, output_path, flags_path, flags_json_repo, flags_json_repo_branch):
     with open(output_path + '/' + flags_path) as f:
         flags = json.load(f)
 
@@ -23,7 +23,8 @@ def generate_html(template_path, output_path, flags_path, flags_json_repo):
         '{FLAG_JSON_DATA}': flags,
         '{FLAG_PATH}': flags_path,
         '{OUTPUT_PATH}': output_path,
-        '{FLAG_JSON_REPO}': flags_json_repo
+        '{FLAG_JSON_REPO}': flags_json_repo,
+        '{FLAG_JSON_REPO_BRANCH}': flags_json_repo_branch
     }
 
     with open(template_path) as f:
@@ -43,6 +44,7 @@ if __name__ == '__main__':
     parser.add_argument('--output', required=True, help='Path for output index.html file')
     parser.add_argument('--flags', required=True, help='Path to flags JSON file')
     parser.add_argument('--repo', required=True, help='GitHub repository name')
+    parser.add_argument('--branch', required=True, help='Branch to store index page on')
     
     if len(sys.argv) == 1:
         parser.print_help()
@@ -50,4 +52,4 @@ if __name__ == '__main__':
         
     args = parser.parse_args()
     
-    generate_html(args.input, args.output, args.flags, args.repo)
+    generate_html(args.input, args.output, args.flags, args.repo, args.branch)

@@ -131,9 +131,9 @@ def create_flag_directories(flags_data: Dict, output_dir: str) -> None:
 
 def main():
     parser = argparse.ArgumentParser(description='Parse Swift Feature Flag files')
-    parser.add_argument('input_dir', help='Directory to search for Swift files')
-    parser.add_argument('output_dir', help='Directory to output processed flags')
-    parser.add_argument('pattern', help='Search pattern for Swift files')
+    parser.add_argument('--input_dir', required=True, help='Directory to search for Swift files')
+    parser.add_argument('--output_dir', required=True, help='Directory to output processed flags')
+    parser.add_argument('--pattern', required=True, help='Search pattern for Swift files')
     args = parser.parse_args()
     
     all_flags = {}
